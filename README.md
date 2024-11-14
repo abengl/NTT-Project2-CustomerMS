@@ -1,5 +1,5 @@
 # Banking System - Customer Microservice
-This microservice is part of the second project deliverable for the NTT Data Tech Girls program. It provides a CRUD API for managing customer banking accounts. Developed with Spring Boot, it incorporates functional programming practices and is integrated with a MySQL database. OpenAPI documentation is included, and the API can be tested with Postman.
+This microservice is part of the second project deliverable for the NTT Data Tech Girls program. It provides a CRUD API for managing customer banking management. Developed with Spring Boot, it incorporates functional programming practices and is integrated with a MySQL database. OpenAPI documentation is included, and the API can be tested with Postman.
 
 ## Table of Contents
 1. [Project Description](#project-description)
@@ -12,7 +12,7 @@ This microservice is part of the second project deliverable for the NTT Data Tec
 
 ## Project Description
 
-The **Customer Microservice** handles operations related to customer banking accounts, offering a RESTful API that supports basic CRUD operations. The microservice operates independently and connects to a MySQL database to manage customer data. This service is designed for use within a microservices architecture, ensuring modularity and separation of concerns between different banking functionalities (e.g., account management, transactions, etc.).
+The **Customer Microservice** handles operations related to customer banking management, offering a RESTful API that supports basic CRUD operations. The microservice operates independently and connects to a MySQL database to manage customer data. This service is designed for use within a microservices architecture, ensuring modularity and separation of concerns between different banking functionalities (e.g., customer registration, data update, registration removal, etc.).
 
 ## Technologies and Approaches
 
