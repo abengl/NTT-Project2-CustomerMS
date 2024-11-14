@@ -11,39 +11,47 @@ import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/customers")
+@RequestMapping("/api/customers")
 public class CustomerController {
 	private final CustomerService customerService;
 
-	@GetMapping
-	public ResponseEntity<?> getAllCustomers(){
-		List<CustomerDTO> customers = customerService.getAllCustomers();
-		return ResponseEntity.ok(customers);
+	@GetMapping("/account/{id}")
+	public boolean customerExists(@PathVariable Integer id) {
+		return customerService.customerExists(id);
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<?> getCustomerById(@PathVariable int id){
+	public ResponseEntity<?> getCustomerById(@PathVariable Integer id) {
 		Optional<CustomerDTO> customer = customerService.getCustomerById(id);
 		return customer.isPresent() ? ResponseEntity.ok(customer.get()) : ResponseEntity.notFound().build();
 	}
 
+	@GetMapping
+	public ResponseEntity<?> getAllCustomers() {
+		List<CustomerDTO> customers = customerService.getAllCustomers();
+		return ResponseEntity.ok(customers);
+	}
+
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateCustomer(@PathVariable int id, @RequestBody CustomerDTO customerDTO){
+	public ResponseEntity<?> updateCustomer(@PathVariable Integer id,
+											@RequestBody CustomerDTO customerDTO) {
 		Optional<CustomerDTO> updatedCustomer = customerService.updateCustomerById(id, customerDTO);
-		return updatedCustomer.isPresent() ? ResponseEntity.ok(updatedCustomer.get()) : ResponseEntity.notFound().build();
+		return updatedCustomer.isPresent() ? ResponseEntity.ok(updatedCustomer.get()) : ResponseEntity.notFound()
+				.build();
 	}
 
 	@PostMapping
-	public ResponseEntity<?> createCustomer(@RequestBody CustomerDTO customerDTO){
+	public ResponseEntity<?> createCustomer(@RequestBody CustomerDTO customerDTO) {
 		CustomerDTO customer = customerService.createCustomer(customerDTO);
 
 		return ResponseEntity.ok(customer);
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteCustomer(@PathVariable int id){
+	public ResponseEntity<?> deleteCustomer(@PathVariable Integer id) {
 		Optional<CustomerDTO> deletedCustomer = customerService.deleteCustomerById(id);
 
-		return deletedCustomer.isPresent() ? ResponseEntity.ok(deletedCustomer.get()) : ResponseEntity.notFound().build();
+		return deletedCustomer.isPresent() ? ResponseEntity.ok(deletedCustomer.get()) : ResponseEntity.notFound()
+				.build();
 	}
 }

@@ -15,7 +15,8 @@ import javax.validation.constraints.NotNull;
 public class Customer {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
+	@Column(name = "customer_id")
+	private Integer customerId;
 	@NotNull
 	@Column(name = "first_name")
 	private String firstName;

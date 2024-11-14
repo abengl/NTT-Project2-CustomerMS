@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Optional;
 
  public interface CustomerService {
+	 boolean customerExists(Integer customerId);
+	 boolean customerHasAccounts(Integer customerId);
 	 List<CustomerDTO> getAllCustomers();
-	 Optional<CustomerDTO> getCustomerById(int id);
-	 Optional<CustomerDTO> updateCustomerById(int id, CustomerDTO customerDTO);
+	 Optional<CustomerDTO> getCustomerById(Integer customerId);
+	 Optional<CustomerDTO> updateCustomerById(Integer customerId, CustomerDTO customerDTO);
 	 CustomerDTO createCustomer(CustomerDTO customerDTO);
-	 Optional<CustomerDTO> deleteCustomerById(int id);
+	 Optional<CustomerDTO> deleteCustomerById(Integer customerId);
 
 }
