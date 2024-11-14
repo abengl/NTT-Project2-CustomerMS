@@ -1,0 +1,163 @@
+openapi: 3.0.1
+info:
+  title: Banking System - Customer Microservice
+  description: API for managing customers with CRUD operations
+  contact:
+    name: Alessandra Godoy
+    email: dev@alessandragodoy.com
+  version: 1.0.0
+servers:
+  - url: http://localhost:8085
+    description: Generated server url
+tags:
+  - name: Customers
+    description: Controller for Customer
+paths:
+  /api/customers/{id}:
+    get:
+      tags:
+        - Customers
+      summary: Retrieve a customer by ID
+      description: Returns a single customer if found, otherwise throws a 404 error.
+      operationId: getCustomerById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CustomerDTO'
+                type: object
+    put:
+      tags:
+        - Customers
+      summary: Updates a customer by ID
+      description: Returns a single customer if found with data updated, otherwise throws a 404 error.
+      operationId: updateCustomer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CustomerDTO'
+                type: object
+    delete:
+      tags:
+        - Customers
+      summary: Deletes a customer by ID
+      description: Returns the customer deleted if found, otherwise throws a 404 error.
+      operationId: deleteCustomer
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CustomerDTO'
+                type: object
+  /api/customers:
+    get:
+      tags:
+        - Customers
+      summary: Retrieves all customers
+      description: Returns the list of customers existing.
+      operationId: getAllCustomers
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerDTO'
+    post:
+      tags:
+        - Customers
+      summary: Creates a new customer
+      description: Returns the customer created.
+      operationId: createCustomer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerDTO'
+        required: true
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/CustomerDTO'
+                type: object
+  /api/customers/account/{id}:
+    get:
+      tags:
+        - Customers
+      summary: Checks if a customer  exists
+      description: Returns a boolean if the customer exists by id.
+      operationId: customerExists
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int32
+      responses:
+        '200':
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: boolean
+components:
+  schemas:
+    CustomerDTO:
+      type: object
+      properties:
+        customerId:
+          type: integer
+          format: int32
+          example: 1
+        firstName:
+          type: string
+          example: "John"
+        lastName:
+          type: string
+          example: "Doe"
+        dni:
+          type: string
+          example: "12345678"
+        email:
+          type: string
+          example: "john.doe@example.com"
