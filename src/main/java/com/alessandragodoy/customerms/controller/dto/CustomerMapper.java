@@ -2,6 +2,9 @@ package com.alessandragodoy.customerms.controller.dto;
 
 import com.alessandragodoy.customerms.model.entity.Customer;
 
+/**
+ * Mapper class for converting between Customer entity and CustomerDTO.
+ */
 public class CustomerMapper {
 	public static CustomerDTO toDTO(Customer customer) {
 		return new CustomerDTO(

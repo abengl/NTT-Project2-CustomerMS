@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+/**
+ * Implementation of the CustomerService interface.
+ * Provides methods for managing customers.
+ */
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
@@ -30,34 +34,10 @@ public class CustomerServiceImpl implements CustomerService {
 	private Predicate<String> isEmailValid = email -> email.matches("^[A-Za-z0-9_.-]+@[A-Za-z0-9.-]+$");
 	private Predicate<String> isDniValid = dni -> dni.matches("[0-9]{8}");
 
+	/* CustomerService methods */
 	@Override
 	public boolean customerExists(Integer customerId) {
 		return customerRepository.existsById(customerId);
-	}
-
-	@Override
-	public boolean customerHasAccounts(Integer customerId) {
-		String url = accountMsUrl + "/" + customerId;
-		try {
-			ResponseEntity<Boolean> response = restTemplate.getForEntity(url, Boolean.class);
-			if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-				return response.getBody();
-			}
-		} catch (Exception e) {
-			System.out.println("Error calling customer-ms: " + e.getMessage());
-		}
-		throw new AccountsNotFoundException("Account not found for ID: " + customerId);
-	}
-
-	@Override
-	public Optional<CustomerDTO> deleteCustomerById(Integer customerId) {
-		if (customerHasAccounts(customerId)) {
-			throw new ValidationException("Customer has accounts and cannot be deleted.");
-		}
-		return customerRepository.findById(customerId).map(existingCustomer -> {
-			customerRepository.delete(existingCustomer);
-			return CustomerMapper.toDTO(existingCustomer);
-		});
 	}
 
 	@Override
@@ -78,6 +58,39 @@ public class CustomerServiceImpl implements CustomerService {
 			customerRepository.save(updatedCustomer);
 			return CustomerMapper.toDTO(updatedCustomer);
 		});
+	}
+
+	@Override
+	public CustomerDTO createCustomer(CustomerDTO customerDTO) {
+		validateCustomerData(customerDTO);
+		Customer customer = CustomerMapper.dtoCreateToEntity(customerDTO);
+		customerRepository.save(customer);
+		return CustomerMapper.toDTO(customer);
+	}
+
+	@Override
+	public Optional<CustomerDTO> deleteCustomerById(Integer customerId) {
+		if (customerHasAccounts(customerId)) {
+			throw new ValidationException("Customer has accounts and cannot be deleted.");
+		}
+		return customerRepository.findById(customerId).map(existingCustomer -> {
+			customerRepository.delete(existingCustomer);
+			return CustomerMapper.toDTO(existingCustomer);
+		});
+	}
+
+	/* Helper methods */
+	private boolean customerHasAccounts(Integer customerId) {
+		String url = accountMsUrl + "/" + customerId;
+		try {
+			ResponseEntity<Boolean> response = restTemplate.getForEntity(url, Boolean.class);
+			if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+				return response.getBody();
+			}
+		} catch (Exception e) {
+			System.out.println("Error calling customer-ms: " + e.getMessage());
+		}
+		throw new AccountsNotFoundException("Account not found for ID: " + customerId);
 	}
 
 	private void validateCustomerData(CustomerDTO customerDTO) {
@@ -114,13 +127,5 @@ public class CustomerServiceImpl implements CustomerService {
 				throw new ValidationException("DNI must be unique.");
 			}
 		});
-	}
-
-	@Override
-	public CustomerDTO createCustomer(CustomerDTO customerDTO) {
-		validateCustomerData(customerDTO);
-		Customer customer = CustomerMapper.dtoCreateToEntity(customerDTO);
-		customerRepository.save(customer);
-		return CustomerMapper.toDTO(customer);
 	}
 }

@@ -11,6 +11,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * REST controller for managing customers.
+ * Provides endpoints for CRUD operations on customers.
+ */
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/customers")

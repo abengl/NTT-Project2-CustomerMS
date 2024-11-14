@@ -5,6 +5,9 @@ import lombok.*;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * Entity class representing a Customer.
+ */
 @Entity
 @Table(name = "customer")
 @Getter
