@@ -2,14 +2,13 @@ package com.alessandragodoy.customerms.controller;
 
 import com.alessandragodoy.customerms.controller.dto.CustomerDTO;
 import com.alessandragodoy.customerms.service.CustomerService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.tags.Tag;
-
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing customers.
@@ -24,41 +23,49 @@ public class CustomerController {
 
 	@GetMapping("/account/{id}")
 	public boolean customerExists(@PathVariable Integer id) {
-		return customerService.customerExists(id);
-	}
 
-	@GetMapping("/{id}")
-	public ResponseEntity<?> getCustomerById(@PathVariable Integer id) {
-		Optional<CustomerDTO> customer = customerService.getCustomerById(id);
-		return customer.isPresent() ? ResponseEntity.ok(customer.get()) : ResponseEntity.notFound().build();
+		return customerService.customerExists(id);
+
 	}
 
 	@GetMapping
-	public ResponseEntity<?> getAllCustomers() {
+	public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
+
 		List<CustomerDTO> customers = customerService.getAllCustomers();
 		return ResponseEntity.ok(customers);
+
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Integer id) {
+
+		CustomerDTO customer = customerService.getCustomerById(id);
+		return ResponseEntity.ok(customer);
+
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<?> updateCustomer(@PathVariable Integer id,
-											@RequestBody CustomerDTO customerDTO) {
-		Optional<CustomerDTO> updatedCustomer = customerService.updateCustomerById(id, customerDTO);
-		return updatedCustomer.isPresent() ? ResponseEntity.ok(updatedCustomer.get()) : ResponseEntity.notFound()
-				.build();
+	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Integer id,
+													  @RequestBody CustomerDTO customerDTO) {
+
+		CustomerDTO updatedCustomer = customerService.updateCustomerById(id, customerDTO);
+		return ResponseEntity.ok(updatedCustomer);
+
 	}
 
 	@PostMapping
-	public ResponseEntity<?> createCustomer(@RequestBody CustomerDTO customerDTO) {
-		CustomerDTO customer = customerService.createCustomer(customerDTO);
+	public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
 
-		return ResponseEntity.ok(customer);
+		CustomerDTO customer = customerService.createCustomer(customerDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteCustomer(@PathVariable Integer id) {
-		Optional<CustomerDTO> deletedCustomer = customerService.deleteCustomerById(id);
+	public ResponseEntity<CustomerDTO> deleteCustomer(@PathVariable Integer id) {
 
-		return deletedCustomer.isPresent() ? ResponseEntity.ok(deletedCustomer.get()) : ResponseEntity.notFound()
-				.build();
+		CustomerDTO deletedCustomer = customerService.deleteCustomerById(id);
+		return ResponseEntity.ok(deletedCustomer);
+
 	}
 }

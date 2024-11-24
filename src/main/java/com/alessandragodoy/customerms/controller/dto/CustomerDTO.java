@@ -1,5 +1,9 @@
 package com.alessandragodoy.customerms.controller.dto;
 
+import com.alessandragodoy.customerms.exception.CustomerValidationException;
+import jakarta.validation.ValidationException;
+import jakarta.validation.constraints.NotNull;
+
 /**
  * Data Transfer Object for Customer.
  *
@@ -9,5 +13,6 @@ package com.alessandragodoy.customerms.controller.dto;
  * @param dni the DNI of the customer
  * @param email the email of the customer
  */
-public record CustomerDTO(Integer customerId, String firstName, String lastName, String dni, String email) {
+public record CustomerDTO(@NotNull Integer customerId, @NotNull String firstName, @NotNull String lastName,
+						  @NotNull String dni, @NotNull String email) {
 }

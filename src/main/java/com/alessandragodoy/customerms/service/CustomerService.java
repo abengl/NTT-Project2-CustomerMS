@@ -31,7 +31,7 @@ public interface CustomerService {
 	 * @param customerId the ID of the customer
 	 * @return an Optional containing the CustomerDTO if found, or empty if not found
 	 */
-	Optional<CustomerDTO> getCustomerById(Integer customerId);
+	CustomerDTO getCustomerById(Integer customerId);
 
 	/**
 	 * Updates a customer by their ID.
@@ -40,7 +40,7 @@ public interface CustomerService {
 	 * @param customerDTO the customer data to update
 	 * @return an Optional containing the updated CustomerDTO if successful, or empty if not found
 	 */
-	Optional<CustomerDTO> updateCustomerById(Integer customerId, CustomerDTO customerDTO);
+	CustomerDTO updateCustomerById(Integer customerId, CustomerDTO customerDTO);
 
 	/**
 	 * Creates a new customer.
@@ -56,5 +56,5 @@ public interface CustomerService {
 	 * @param customerId the ID of the customer
 	 * @return an Optional containing the deleted CustomerDTO if successful, or empty if not found
 	 */
-	Optional<CustomerDTO> deleteCustomerById(Integer customerId);
+	CustomerDTO deleteCustomerById(Integer customerId);
 }

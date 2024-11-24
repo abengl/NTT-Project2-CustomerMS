@@ -1,10 +1,12 @@
 package com.alessandragodoy.customerms.controller.dto;
 
 import com.alessandragodoy.customerms.model.entity.Customer;
+import org.springframework.stereotype.Component;
 
 /**
  * Mapper class for converting between Customer entity and CustomerDTO.
  */
+@Component
 public class CustomerMapper {
 	public static CustomerDTO toDTO(Customer customer) {
 		return new CustomerDTO(
