@@ -3,7 +3,6 @@ package com.alessandragodoy.customerms.service;
 import com.alessandragodoy.customerms.controller.dto.CustomerDTO;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Service interface for managing customers.

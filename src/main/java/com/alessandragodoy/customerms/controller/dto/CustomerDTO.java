@@ -1,7 +1,5 @@
 package com.alessandragodoy.customerms.controller.dto;
 
-import com.alessandragodoy.customerms.exception.CustomerValidationException;
-import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.NotNull;
 
 /**

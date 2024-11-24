@@ -107,9 +107,8 @@ public class CustomerServiceTests {
 		when(customerRepository.findById(customerId)).thenReturn(Optional.ofNullable(null));
 
 		// Act & Assert
-		AccountsNotFoundException exception = assertThrows(AccountsNotFoundException.class, () -> {
-			customerService.getCustomerById(customerId);
-		});
+		AccountsNotFoundException exception = assertThrows(AccountsNotFoundException.class,
+				() -> customerService.getCustomerById(customerId));
 		assertEquals("Customer not found", exception.getMessage());
 	}
 
@@ -150,9 +149,8 @@ public class CustomerServiceTests {
 		when(customerRepository.findById(customerId)).thenReturn(Optional.ofNullable(null));
 
 		// Act & Assert
-		AccountsNotFoundException exception = assertThrows(AccountsNotFoundException.class, () -> {
-			customerService.updateCustomerById(customerId, customerDTORequest);
-		});
+		AccountsNotFoundException exception = assertThrows(AccountsNotFoundException.class,
+				() -> customerService.updateCustomerById(customerId, customerDTORequest));
 		assertEquals("Customer not found", exception.getMessage());
 	}
 
@@ -214,9 +212,8 @@ public class CustomerServiceTests {
 		doReturn(responseEntity).when(restTemplate).getForEntity(url, Boolean.class);
 
 		// Act & Assert
-		CustomerValidationException exception = assertThrows(CustomerValidationException.class, () -> {
-			customerService.deleteCustomerById(customerId);
-		});
+		CustomerValidationException exception = assertThrows(CustomerValidationException.class,
+				() -> customerService.deleteCustomerById(customerId));
 		assertEquals("Customer has accounts and cannot be deleted.", exception.getMessage());
 	}
 }
