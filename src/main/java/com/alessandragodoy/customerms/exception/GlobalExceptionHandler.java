@@ -21,8 +21,4 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
 	}
 
-//	@ExceptionHandler(Exception.class)
-//	public ResponseEntity<String> handleGeneralException(Exception e) {
-//		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred. " + e.getMessage());
-//	}
 }

@@ -101,7 +101,7 @@ public class CustomerServiceImpl implements CustomerService {
 				.isEmpty() || customerDTO.lastName() == null || customerDTO.lastName()
 				.isEmpty() || customerDTO.dni() == null || customerDTO.dni()
 				.isEmpty() || customerDTO.email() == null || customerDTO.email().isEmpty()) {
-			throw new CustomerValidationException("First name, last name, DNI and email are required fields.");
+			throw new CustomerValidationException("First name, last name, DNI, and email are required.");
 		}
 	}
 
@@ -114,7 +114,7 @@ public class CustomerServiceImpl implements CustomerService {
 	private void checkEmailFormat(String email) {
 		if (!isEmailValid.test(email)) {
 			throw new CustomerValidationException(
-					"Invalid email format. It must follow the following format " + "'user123@mail.com'");
+					"Invalid email format. Format example 'user123@mail.com'");
 		}
 
 	}
