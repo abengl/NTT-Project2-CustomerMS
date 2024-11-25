@@ -4,6 +4,7 @@ import com.alessandragodoy.customerms.controller.dto.CustomerDTO;
 import com.alessandragodoy.customerms.controller.dto.CustomerMapper;
 import com.alessandragodoy.customerms.exception.AccountsNotFoundException;
 import com.alessandragodoy.customerms.exception.CustomerValidationException;
+import com.alessandragodoy.customerms.exception.ExternalServiceException;
 import com.alessandragodoy.customerms.model.entity.Customer;
 import com.alessandragodoy.customerms.repository.CustomerRepository;
 import com.alessandragodoy.customerms.service.CustomerService;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -81,12 +83,15 @@ public class CustomerServiceImpl implements CustomerService {
 	/* Helper methods */
 	private boolean customerHasAccounts(Integer customerId) {
 		String url = accountMsUrl + "/" + customerId;
-
-		ResponseEntity<Boolean> response = restTemplate.getForEntity(url, Boolean.class);
-		if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-			return response.getBody();
+		try {
+			ResponseEntity<Boolean> response = restTemplate.getForEntity(url, Boolean.class);
+			if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+				return response.getBody();
+			}
+		} catch (ResourceAccessException e) {
+			throw new ExternalServiceException("Unable to connect to the account service.");
 		}
-		throw new AccountsNotFoundException("Error checking accounts in the microservice");
+		throw new ExternalServiceException("Unexpected error occurred while checking customer accounts.");
 	}
 
 	private void validateCustomerData(CustomerDTO customerDTO) {
@@ -113,8 +118,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	private void checkEmailFormat(String email) {
 		if (!isEmailValid.test(email)) {
-			throw new CustomerValidationException(
-					"Invalid email format. Format example 'user123@mail.com'");
+			throw new CustomerValidationException("Invalid email format. Format example 'user123@mail.com'");
 		}
 
 	}
