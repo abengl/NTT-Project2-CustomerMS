@@ -21,13 +21,13 @@ import java.util.List;
 public class CustomerController {
 	private final CustomerService customerService;
 
-	@GetMapping("/account/{id}")
-	public boolean customerExists(@PathVariable Integer id) {
+	// CUSTOMER CRUD ENDPOINTS (READ, UPDATE, CREATE, DELETE)
 
-		return customerService.customerExists(id);
-
-	}
-
+	/**
+	 * Retrieves a list of all customers.
+	 *
+	 * @return ResponseEntity containing the list of all customers
+	 */
 	@GetMapping
 	public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
 
@@ -36,6 +36,12 @@ public class CustomerController {
 
 	}
 
+	/**
+	 * Retrieves a customer by their ID.
+	 *
+	 * @param id the ID of the customer to be retrieved
+	 * @return ResponseEntity containing the customer data
+	 */
 	@GetMapping("/{id}")
 	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Integer id) {
 
@@ -44,6 +50,13 @@ public class CustomerController {
 
 	}
 
+	/**
+	 * Updates an existing customer by their ID.
+	 *
+	 * @param id          the ID of the customer to be updated
+	 * @param customerDTO the customer data transfer object containing the updated details of the customer
+	 * @return ResponseEntity containing the updated customer data
+	 */
 	@PutMapping("/{id}")
 	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Integer id,
 													  @RequestBody CustomerDTO customerDTO) {
@@ -53,6 +66,12 @@ public class CustomerController {
 
 	}
 
+	/**
+	 * Creates a new customer.
+	 *
+	 * @param customerDTO the customer data transfer object containing the details of the customer to be created
+	 * @return ResponseEntity containing the created customer data
+	 */
 	@PostMapping
 	public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
 
@@ -61,11 +80,32 @@ public class CustomerController {
 
 	}
 
+	/**
+	 * Deletes a customer by their ID.
+	 *
+	 * @param id the ID of the customer to be deleted
+	 * @return ResponseEntity containing the deleted customer data
+	 */
 	@DeleteMapping("/{id}")
 	public ResponseEntity<CustomerDTO> deleteCustomer(@PathVariable Integer id) {
 
 		CustomerDTO deletedCustomer = customerService.deleteCustomerById(id);
 		return ResponseEntity.ok(deletedCustomer);
+
+	}
+
+	// ENDPOINT FOR ACCOUNT-MS
+
+	/**
+	 * Checks if a customer exists by their ID.
+	 *
+	 * @param id the ID of the customer to check
+	 * @return true if the customer exists, false otherwise
+	 */
+	@GetMapping("/account/{id}")
+	public boolean customerExists(@PathVariable Integer id) {
+
+		return customerService.customerExists(id);
 
 	}
 }

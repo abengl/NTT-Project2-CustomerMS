@@ -34,12 +34,7 @@ public class CustomerServiceImpl implements CustomerService {
 	@Value("${account.ms.url}")
 	private String accountMsUrl;
 
-	/* CustomerService methods */
-	@Override
-	public boolean customerExists(Integer customerId) {
-		return customerRepository.existsById(customerId);
-	}
-
+	/* Customer MS CRUD methods */
 	@Override
 	public List<CustomerDTO> getAllCustomers() {
 		return customerRepository.findAll().stream().map(CustomerMapper::toDTO).toList();
@@ -78,6 +73,12 @@ public class CustomerServiceImpl implements CustomerService {
 			customerRepository.delete(existingCustomer);
 			return CustomerMapper.toDTO(existingCustomer);
 		}).orElseThrow(() -> new AccountsNotFoundException("Customer not found"));
+	}
+
+	/* Account MS methods */
+	@Override
+	public boolean customerExists(Integer customerId) {
+		return customerRepository.existsById(customerId);
 	}
 
 	/* Helper methods */
