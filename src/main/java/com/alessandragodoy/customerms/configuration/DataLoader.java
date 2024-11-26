@@ -1,6 +1,6 @@
 package com.alessandragodoy.customerms.configuration;
 
-import com.alessandragodoy.customerms.model.entity.Customer;
+import com.alessandragodoy.customerms.model.Customer;
 import com.alessandragodoy.customerms.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;

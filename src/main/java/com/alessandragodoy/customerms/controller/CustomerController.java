@@ -21,8 +21,6 @@ import java.util.List;
 public class CustomerController {
 	private final CustomerService customerService;
 
-	// CUSTOMER CRUD ENDPOINTS (READ, UPDATE, CREATE, DELETE)
-
 	/**
 	 * Retrieves a list of all customers.
 	 *
@@ -93,8 +91,6 @@ public class CustomerController {
 		return ResponseEntity.ok(deletedCustomer);
 
 	}
-
-	// ENDPOINT FOR ACCOUNT-MS
 
 	/**
 	 * Checks if a customer exists by their ID.

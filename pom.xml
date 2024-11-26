@@ -166,10 +166,12 @@
                         </goals>
                         <configuration>
                             <excludes>
-                                <!-- Exclude configuration classes -->
+                                <!-- Exclude classes or packages -->
                                 <exclude>com/alessandragodoy/customerms/configuration/**</exclude>
-                                <!-- Exclude main application class -->
+                                <exclude>com/alessandragodoy/customerms/exception/**</exclude>
+                                <exclude>com/alessandragodoy/customerms/utility/**</exclude>
                                 <exclude>com/alessandragodoy/customerms/CustomerMsApplication*</exclude>
+                                <exclude>com/alessandragodoy/customerms/service/CustomerServiceClient*</exclude>
                             </excludes>
                         </configuration>
                     </execution>

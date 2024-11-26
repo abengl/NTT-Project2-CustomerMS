@@ -4,20 +4,16 @@ import com.alessandragodoy.customerms.controller.dto.CustomerDTO;
 import com.alessandragodoy.customerms.controller.dto.CustomerMapper;
 import com.alessandragodoy.customerms.exception.AccountsNotFoundException;
 import com.alessandragodoy.customerms.exception.CustomerValidationException;
-import com.alessandragodoy.customerms.exception.ExternalServiceException;
-import com.alessandragodoy.customerms.model.entity.Customer;
+import com.alessandragodoy.customerms.model.Customer;
 import com.alessandragodoy.customerms.repository.CustomerRepository;
 import com.alessandragodoy.customerms.service.CustomerService;
+import com.alessandragodoy.customerms.service.CustomerServiceClient;
+import com.alessandragodoy.customerms.utility.CustomerValidationUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 /**
  * Implementation of the CustomerService interface.
@@ -28,11 +24,7 @@ import java.util.function.Predicate;
 public class CustomerServiceImpl implements CustomerService {
 
 	private final CustomerRepository customerRepository;
-	private final RestTemplate restTemplate;
-	private final Predicate<String> isEmailValid = email -> email.matches("^[A-Za-z0-9_.-]+@[A-Za-z0-9.-]+$");
-	private final Predicate<String> isDniValid = dni -> dni.matches("[0-9]{8}");
-	@Value("${account.ms.url}")
-	private String accountMsUrl;
+	private final CustomerServiceClient customerServiceClient;
 
 	/* Customer MS CRUD methods */
 	@Override
@@ -66,7 +58,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public CustomerDTO deleteCustomerById(Integer customerId) {
-		if (customerHasAccounts(customerId)) {
+		if (customerServiceClient.customerHasAccounts(customerId)) {
 			throw new CustomerValidationException("Customer has accounts and cannot be deleted.");
 		}
 		return customerRepository.findById(customerId).map(existingCustomer -> {
@@ -75,52 +67,23 @@ public class CustomerServiceImpl implements CustomerService {
 		}).orElseThrow(() -> new AccountsNotFoundException("Customer not found"));
 	}
 
-	/* Account MS methods */
+	/* Method for the Account MS */
 	@Override
 	public boolean customerExists(Integer customerId) {
 		return customerRepository.existsById(customerId);
 	}
 
 	/* Helper methods */
-	private boolean customerHasAccounts(Integer customerId) {
-		String url = accountMsUrl + "/" + customerId;
-		try {
-			ResponseEntity<Boolean> response = restTemplate.getForEntity(url, Boolean.class);
-			if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
-				return response.getBody();
-			}
-		} catch (ResourceAccessException e) {
-			throw new ExternalServiceException("Unable to connect to the account service.");
-		}
-		throw new ExternalServiceException("Unexpected error occurred while checking customer accounts.");
-	}
-
 	private void validateCustomerData(CustomerDTO customerDTO) {
-		checkRequiredFields(customerDTO);
-		checkDniFormat(customerDTO.dni());
-		checkEmailFormat(customerDTO.email());
+		CustomerValidationUtils.checkRequiredFields(
+				customerDTO.firstName(),
+				customerDTO.lastName(),
+				customerDTO.dni(),
+				customerDTO.email()
+		);
+		CustomerValidationUtils.checkDniFormat(customerDTO.dni());
+		CustomerValidationUtils.checkEmailFormat(customerDTO.email());
 		checkDniUniqueness(customerDTO.dni(), customerDTO.customerId());
-	}
-
-	private void checkRequiredFields(CustomerDTO customerDTO) {
-		if (customerDTO.firstName() == null || customerDTO.firstName()
-				.isEmpty() || customerDTO.lastName() == null || customerDTO.lastName()
-				.isEmpty() || customerDTO.dni() == null || customerDTO.dni()
-				.isEmpty() || customerDTO.email() == null || customerDTO.email().isEmpty()) {
-			throw new CustomerValidationException("First name, last name, DNI, and email are required.");
-		}
-	}
-
-	private void checkDniFormat(String dni) {
-		if (!isDniValid.test(dni)) {
-			throw new CustomerValidationException("Invalid DNI format. It must contain exactly 8 digits.");
-		}
-	}
-
-	private void checkEmailFormat(String email) {
-		if (!isEmailValid.test(email)) {
-			throw new CustomerValidationException("Invalid email format. Format example 'user123@mail.com'");
-		}
 
 	}
 

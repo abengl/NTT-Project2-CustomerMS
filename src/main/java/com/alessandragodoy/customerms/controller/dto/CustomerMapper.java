@@ -1,6 +1,6 @@
 package com.alessandragodoy.customerms.controller.dto;
 
-import com.alessandragodoy.customerms.model.entity.Customer;
+import com.alessandragodoy.customerms.model.Customer;
 import org.springframework.stereotype.Component;
 
 /**
