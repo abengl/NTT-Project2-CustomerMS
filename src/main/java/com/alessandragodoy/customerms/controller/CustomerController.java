@@ -2,14 +2,13 @@ package com.alessandragodoy.customerms.controller;
 
 import com.alessandragodoy.customerms.controller.dto.CustomerDTO;
 import com.alessandragodoy.customerms.service.CustomerService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.tags.Tag;
-
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * REST controller for managing customers.
@@ -22,43 +21,87 @@ import java.util.Optional;
 public class CustomerController {
 	private final CustomerService customerService;
 
-	@GetMapping("/account/{id}")
-	public boolean customerExists(@PathVariable Integer id) {
-		return customerService.customerExists(id);
-	}
-
-	@GetMapping("/{id}")
-	public ResponseEntity<?> getCustomerById(@PathVariable Integer id) {
-		Optional<CustomerDTO> customer = customerService.getCustomerById(id);
-		return customer.isPresent() ? ResponseEntity.ok(customer.get()) : ResponseEntity.notFound().build();
-	}
-
+	/**
+	 * Retrieves a list of all customers.
+	 *
+	 * @return ResponseEntity containing the list of all customers
+	 */
 	@GetMapping
-	public ResponseEntity<?> getAllCustomers() {
+	public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
+
 		List<CustomerDTO> customers = customerService.getAllCustomers();
 		return ResponseEntity.ok(customers);
+
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<?> updateCustomer(@PathVariable Integer id,
-											@RequestBody CustomerDTO customerDTO) {
-		Optional<CustomerDTO> updatedCustomer = customerService.updateCustomerById(id, customerDTO);
-		return updatedCustomer.isPresent() ? ResponseEntity.ok(updatedCustomer.get()) : ResponseEntity.notFound()
-				.build();
-	}
+	/**
+	 * Retrieves a customer by their ID.
+	 *
+	 * @param id the ID of the customer to be retrieved
+	 * @return ResponseEntity containing the customer data
+	 */
+	@GetMapping("/{id}")
+	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Integer id) {
 
-	@PostMapping
-	public ResponseEntity<?> createCustomer(@RequestBody CustomerDTO customerDTO) {
-		CustomerDTO customer = customerService.createCustomer(customerDTO);
-
+		CustomerDTO customer = customerService.getCustomerById(id);
 		return ResponseEntity.ok(customer);
+
 	}
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<?> deleteCustomer(@PathVariable Integer id) {
-		Optional<CustomerDTO> deletedCustomer = customerService.deleteCustomerById(id);
+	/**
+	 * Updates an existing customer by their ID.
+	 *
+	 * @param id          the ID of the customer to be updated
+	 * @param customerDTO the customer data transfer object containing the updated details of the customer
+	 * @return ResponseEntity containing the updated customer data
+	 */
+	@PutMapping("/{id}")
+	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Integer id,
+													  @RequestBody CustomerDTO customerDTO) {
 
-		return deletedCustomer.isPresent() ? ResponseEntity.ok(deletedCustomer.get()) : ResponseEntity.notFound()
-				.build();
+		CustomerDTO updatedCustomer = customerService.updateCustomerById(id, customerDTO);
+		return ResponseEntity.ok(updatedCustomer);
+
+	}
+
+	/**
+	 * Creates a new customer.
+	 *
+	 * @param customerDTO the customer data transfer object containing the details of the customer to be created
+	 * @return ResponseEntity containing the created customer data
+	 */
+	@PostMapping
+	public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
+
+		CustomerDTO customer = customerService.createCustomer(customerDTO);
+		return ResponseEntity.status(HttpStatus.CREATED).body(customer);
+
+	}
+
+	/**
+	 * Deletes a customer by their ID.
+	 *
+	 * @param id the ID of the customer to be deleted
+	 * @return ResponseEntity containing the deleted customer data
+	 */
+	@DeleteMapping("/{id}")
+	public ResponseEntity<CustomerDTO> deleteCustomer(@PathVariable Integer id) {
+
+		CustomerDTO deletedCustomer = customerService.deleteCustomerById(id);
+		return ResponseEntity.ok(deletedCustomer);
+
+	}
+
+	/**
+	 * Checks if a customer exists by their ID.
+	 *
+	 * @param id the ID of the customer to check
+	 * @return true if the customer exists, false otherwise
+	 */
+	@GetMapping("/account/{id}")
+	public boolean customerExists(@PathVariable Integer id) {
+
+		return customerService.customerExists(id);
+
 	}
 }

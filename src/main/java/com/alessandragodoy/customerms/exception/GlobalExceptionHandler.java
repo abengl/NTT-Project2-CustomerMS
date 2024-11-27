@@ -11,13 +11,39 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
  */
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<String> handleGeneralException(Exception e) {
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred. " + e.getMessage());
-	}
+	/**
+	 * Handles AccountsNotFoundException and returns a 404 Not Found response for
+	 * unregistered accounts.
+	 *
+	 * @param e the AccountsNotFoundException thrown
+	 * @return ResponseEntity containing the error message and 404 status
+	 */
 	@ExceptionHandler(AccountsNotFoundException.class)
 	public ResponseEntity<String> handleCustomerNotFoundException(AccountsNotFoundException e) {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+	}
+
+	/**
+	 * Handles CustomerValidationException and returns a 400 Bad Request response for
+	 * invalid parameters or invalid requests.
+	 *
+	 * @param e the CustomerValidationException thrown
+	 * @return ResponseEntity containing the error message and 400 status
+	 */
+	@ExceptionHandler(CustomerValidationException.class)
+	public ResponseEntity<String> handleValidationException(CustomerValidationException e) {
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	}
+
+	/**
+	 * Handles ExternalServiceException and returns a 503 Service Unavailable response
+	 * when the external customer microservice is unreachable or fails.
+	 *
+	 * @param e the ExternalServiceException thrown
+	 * @return ResponseEntity containing the error message and 503 status
+	 */
+	@ExceptionHandler(ExternalServiceException.class)
+	public ResponseEntity<String> handleExternalServiceException(ExternalServiceException e) {
+		return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(e.getMessage());
 	}
 }

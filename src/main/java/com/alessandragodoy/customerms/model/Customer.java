@@ -1,4 +1,4 @@
-package com.alessandragodoy.customerms.model.entity;
+package com.alessandragodoy.customerms.model;
 
 import jakarta.persistence.*;
 import lombok.*;
