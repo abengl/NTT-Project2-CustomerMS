@@ -11,6 +11,6 @@ import jakarta.validation.constraints.NotNull;
  * @param dni the DNI of the customer
  * @param email the email of the customer
  */
-public record CustomerDTO(@NotNull Integer customerId, @NotNull String firstName, @NotNull String lastName,
+public record CustomerDTO(Integer customerId, @NotNull String firstName, @NotNull String lastName,
 						  @NotNull String dni, @NotNull String email) {
 }

@@ -16,7 +16,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/customers")
+@RequestMapping("/api/v1/customers")
 @Tag(name = "Customers", description = "Controller for Customer")
 public class CustomerController {
 	private final CustomerService customerService;
@@ -24,7 +24,7 @@ public class CustomerController {
 	/**
 	 * Retrieves a list of all customers.
 	 *
-	 * @return ResponseEntity containing the list of all customers
+	 * @return ResponseEntity containing the list of all customers.
 	 */
 	@GetMapping
 	public ResponseEntity<List<CustomerDTO>> getAllCustomers() {
@@ -37,8 +37,8 @@ public class CustomerController {
 	/**
 	 * Retrieves a customer by their ID.
 	 *
-	 * @param id the ID of the customer to be retrieved
-	 * @return ResponseEntity containing the customer data
+	 * @param id the ID of the customer to be retrieved.
+	 * @return ResponseEntity containing the customer data.
 	 */
 	@GetMapping("/{id}")
 	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Integer id) {
@@ -51,9 +51,9 @@ public class CustomerController {
 	/**
 	 * Updates an existing customer by their ID.
 	 *
-	 * @param id          the ID of the customer to be updated
-	 * @param customerDTO the customer data transfer object containing the updated details of the customer
-	 * @return ResponseEntity containing the updated customer data
+	 * @param id          the ID of the customer to be updated.
+	 * @param customerDTO the customer data transfer object containing the updated details of the customer.
+	 * @return ResponseEntity containing the updated customer data.
 	 */
 	@PutMapping("/{id}")
 	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Integer id,
@@ -67,8 +67,8 @@ public class CustomerController {
 	/**
 	 * Creates a new customer.
 	 *
-	 * @param customerDTO the customer data transfer object containing the details of the customer to be created
-	 * @return ResponseEntity containing the created customer data
+	 * @param customerDTO the customer data transfer object containing the details of the customer to be created.
+	 * @return ResponseEntity containing the created customer data.
 	 */
 	@PostMapping
 	public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
