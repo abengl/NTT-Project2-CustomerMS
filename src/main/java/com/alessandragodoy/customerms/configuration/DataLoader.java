@@ -3,6 +3,8 @@ package com.alessandragodoy.customerms.configuration;
 import com.alessandragodoy.customerms.model.Customer;
 import com.alessandragodoy.customerms.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -17,28 +19,29 @@ import java.util.List;
 public class DataLoader implements CommandLineRunner {
 
 	private final CustomerRepository customerRepository;
+	private static final Logger LOGGER = LoggerFactory.getLogger(DataLoader.class);
 
 	@Override
 	public void run(String... args) {
 		if (customerRepository.count() == 0) {
-			System.out.println("No customers found, creating initial customers...");
+			LOGGER.info("No customers found, creating initial customers...");
 			List<Customer> initialCustomers = List.of(
-					Customer.builder().firstName("John").lastName("Doe").dni("12345678")
-							.email("john.doe@example.com").build(),
-					Customer.builder().firstName("Jane").lastName("Smith").dni("87654321")
-							.email("jane.smith@example.com").build(),
-					Customer.builder().firstName("Alice").lastName("Brown").dni("11223344")
-							.email("alice.brown@example.com").build(),
-					Customer.builder().firstName("Bob").lastName("White").dni("44332211")
-							.email("bob.white.@example.com").build(),
-					Customer.builder().firstName("Charlie").lastName("Black").dni("33221144")
-							.email("charlie.black@example.com").build()
-			);
+					Customer.builder().firstName("Julia").lastName("Mendez").dni("11111111")
+					.email("jmendez@mail.com").build(),
+					Customer.builder().firstName("Alicia").lastName("Ramirez").dni("22222222")
+					.email("aramirez@mail.com").build(),
+					Customer.builder().firstName("Jose").lastName("Melendez").dni("33333333")
+					.email("jmelendez@mail.com").build(),
+					Customer.builder().firstName("Carla").lastName("Gomez").dni("44444444")
+					.email("cgomez@mail.com").build(),
+					Customer.builder().firstName("Juan").lastName("Perez").dni("55555555")
+							.email("jperez@mail.com").build()
+					);
 
 			customerRepository.saveAll(initialCustomers);
-			System.out.println("Initial customers added to the database.");
+			LOGGER.info("Initial customers added to the database.");
 		} else {
-			System.out.println("Customers already exist, skipping initialization.");
+			LOGGER.info("Customers already exist, skipping initialization.");
 		}
 	}
 }

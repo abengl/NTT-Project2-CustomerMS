@@ -1,12 +1,12 @@
 package com.alessandragodoy.customerms;
 
+import com.alessandragodoy.customerms.adapter.CustomerAdapter;
 import com.alessandragodoy.customerms.controller.dto.CustomerDTO;
 import com.alessandragodoy.customerms.exception.AccountsNotFoundException;
 import com.alessandragodoy.customerms.exception.CustomerValidationException;
 import com.alessandragodoy.customerms.exception.ExternalServiceException;
 import com.alessandragodoy.customerms.model.Customer;
 import com.alessandragodoy.customerms.repository.CustomerRepository;
-import com.alessandragodoy.customerms.service.CustomerServiceClient;
 import com.alessandragodoy.customerms.service.impl.CustomerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -36,7 +36,7 @@ class CustomerServiceExceptionTests {
 	private CustomerRepository customerRepository;
 
 	@Mock
-	CustomerServiceClient customerServiceClient;
+	CustomerAdapter customerAdapter;
 
 	@BeforeEach
 	public void setUp() {
@@ -139,7 +139,7 @@ class CustomerServiceExceptionTests {
 		// Arrange
 		int customerId = 2;
 
-		when(customerServiceClient.customerHasAccounts(customerId)).thenReturn(true);
+		when(customerAdapter.customerHasAccounts(customerId)).thenReturn(true);
 
 		// Act & Assert
 		CustomerValidationException exception = assertThrows(CustomerValidationException.class,
@@ -153,7 +153,7 @@ class CustomerServiceExceptionTests {
 		// Arrange
 		int customerId = 2;
 
-		doThrow(new ExternalServiceException("Unable to connect to the account service.")).when(customerServiceClient).customerHasAccounts(customerId);
+		doThrow(new ExternalServiceException("Unable to connect to the account service.")).when(customerAdapter).customerHasAccounts(customerId);
 
 		// Act & Assert
 		ExternalServiceException exception = assertThrows(ExternalServiceException.class,
