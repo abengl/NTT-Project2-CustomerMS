@@ -1,9 +1,9 @@
 package com.alessandragodoy.customerms;
 
+import com.alessandragodoy.customerms.adapter.CustomerAdapter;
 import com.alessandragodoy.customerms.controller.dto.CustomerDTO;
 import com.alessandragodoy.customerms.model.Customer;
 import com.alessandragodoy.customerms.repository.CustomerRepository;
-import com.alessandragodoy.customerms.service.CustomerServiceClient;
 import com.alessandragodoy.customerms.service.impl.CustomerServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 class CustomerServiceValidTests {
 	public List<Customer> customers = new ArrayList<>();
 	@Mock
-	CustomerServiceClient customerServiceClient;
+	CustomerAdapter customerAdapter;
 	@InjectMocks
 	private CustomerServiceImpl customerService;
 	@Mock
@@ -143,7 +143,7 @@ class CustomerServiceValidTests {
 		int customerId = 2;
 		Customer existingCustomer = customers.get(customerId);
 
-		when(customerServiceClient.customerHasAccounts(customerId)).thenReturn(false);
+		when(customerAdapter.customerHasAccounts(customerId)).thenReturn(false);
 		when(customerRepository.findById(customerId)).thenReturn(Optional.ofNullable(existingCustomer));
 		doNothing().when(customerRepository).delete(existingCustomer);
 

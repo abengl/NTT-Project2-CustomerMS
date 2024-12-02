@@ -1,10 +1,12 @@
-package com.alessandragodoy.customerms.controller.dto;
+package com.alessandragodoy.customerms.utility;
 
+import com.alessandragodoy.customerms.controller.dto.CustomerDTO;
 import com.alessandragodoy.customerms.model.Customer;
 import org.springframework.stereotype.Component;
 
 /**
- * Mapper class for converting between Customer entity and CustomerDTO.
+ * Singleton bean for mapping between Customer and CustomerDTO.
+ * Thread-safe because it is stateless.
  */
 @Component
 public class CustomerMapper {

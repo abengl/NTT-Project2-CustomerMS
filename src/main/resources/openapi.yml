@@ -13,20 +13,22 @@ tags:
   - name: Customers
     description: Controller for Customer
 paths:
-  /api/customers/{id}:
+  /api/customers/{customerId}:
     get:
       tags:
         - Customers
       summary: Retrieve a customer by ID
-      description: Returns a single customer if found, otherwise throws a 404 error.
+      description: Returns a single customer if found, otherwise throws an exception.
       operationId: getCustomerById
       parameters:
-        - name: id
+        - name: customerId
           in: path
           required: true
           schema:
             type: integer
             format: int32
+          example: 1
+          description: The ID of the customer to retrieve.
       responses:
         '200':
           description: OK
@@ -34,25 +36,39 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/CustomerDTO'
-                type: object
+              example:
+                customerId: 1
+                firstName: "John"
+                lastName: "Doe"
+                dni: "12345678"
+                email: "john.doe@example.com"
+        '404':
+          description: Customer not found
     put:
       tags:
         - Customers
       summary: Updates a customer by ID
-      description: Returns a single customer if found with data updated, otherwise throws a 404 error.
+      description: Returns a single customer if found with data updated, otherwise throws an exception.
       operationId: updateCustomer
       parameters:
-        - name: id
+        - name: customerId
           in: path
           required: true
           schema:
             type: integer
             format: int32
+          example: 1
+          description: The ID of the customer to update.
       requestBody:
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/CustomerDTO'
+            example:
+              firstName: "Jane"
+              lastName: "Doe"
+              dni: "87654321"
+              email: "jane.doe@example.com"
         required: true
       responses:
         '200':
@@ -61,20 +77,29 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/CustomerDTO'
-                type: object
+              example:
+                customerId: 1
+                firstName: "Jane"
+                lastName: "Doe"
+                dni: "87654321"
+                email: "jane.doe@example.com"
+        '404':
+          description: Customer not found
     delete:
       tags:
         - Customers
       summary: Deletes a customer by ID
-      description: Returns the customer deleted if found, otherwise throws a 404 error.
+      description: Returns the customer deleted if found, otherwise throws aan exception.
       operationId: deleteCustomer
       parameters:
-        - name: id
+        - name: customerId
           in: path
           required: true
           schema:
             type: integer
             format: int32
+          example: 1
+          description: The ID of the customer to delete
       responses:
         '200':
           description: OK
@@ -82,7 +107,14 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/CustomerDTO'
-                type: object
+              example:
+                customerId: 1
+                firstName: "John"
+                lastName: "Doe"
+                dni: "12345678"
+                email: "john.doe@example.com"
+        '404':
+          description: Customer not found
   /api/customers:
     get:
       tags:
@@ -110,6 +142,11 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/CustomerDTO'
+            example:
+              firstName: "Jane"
+              lastName: "Doe"
+              dni: "87654321"
+              email: "jane.doe@example.com"
         required: true
       responses:
         '200':
@@ -118,8 +155,14 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/CustomerDTO'
-                type: object
-  /api/customers/account/{id}:
+              example:
+                customerId: 1
+                firstName: "John"
+                lastName: "Doe"
+                dni: "12345678"
+                email: "john.doe@example.com"
+
+  /api/customers/account/{customerId}:
     get:
       tags:
         - Customers
@@ -127,7 +170,7 @@ paths:
       description: Returns a boolean if the customer exists by id.
       operationId: customerExists
       parameters:
-        - name: id
+        - name: customerId
           in: path
           required: true
           schema:
@@ -140,6 +183,7 @@ paths:
             '*/*':
               schema:
                 type: boolean
+              example: true
 components:
   schemas:
     CustomerDTO:

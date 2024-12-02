@@ -2,7 +2,7 @@ package com.alessandragodoy.customerms.controller;
 
 import com.alessandragodoy.customerms.controller.dto.CustomerDTO;
 import com.alessandragodoy.customerms.service.CustomerService;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,6 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/customers")
-@Tag(name = "Customers", description = "Controller for Customer")
 public class CustomerController {
 	private final CustomerService customerService;
 
@@ -37,13 +36,13 @@ public class CustomerController {
 	/**
 	 * Retrieves a customer by their ID.
 	 *
-	 * @param id the ID of the customer to be retrieved.
+	 * @param customerId the ID of the customer to be retrieved.
 	 * @return ResponseEntity containing the customer data.
 	 */
-	@GetMapping("/{id}")
-	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Integer id) {
+	@GetMapping("/{customerId}")
+	public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Integer customerId) {
 
-		CustomerDTO customer = customerService.getCustomerById(id);
+		CustomerDTO customer = customerService.getCustomerById(customerId);
 		return ResponseEntity.ok(customer);
 
 	}
@@ -51,15 +50,15 @@ public class CustomerController {
 	/**
 	 * Updates an existing customer by their ID.
 	 *
-	 * @param id          the ID of the customer to be updated.
+	 * @param customerId          the ID of the customer to be updated.
 	 * @param customerDTO the customer data transfer object containing the updated details of the customer.
 	 * @return ResponseEntity containing the updated customer data.
 	 */
-	@PutMapping("/{id}")
-	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Integer id,
-													  @RequestBody CustomerDTO customerDTO) {
+	@PutMapping("/{customerId}")
+	public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Integer customerId,
+													  @Valid @RequestBody CustomerDTO customerDTO) {
 
-		CustomerDTO updatedCustomer = customerService.updateCustomerById(id, customerDTO);
+		CustomerDTO updatedCustomer = customerService.updateCustomerById(customerId, customerDTO);
 		return ResponseEntity.ok(updatedCustomer);
 
 	}
@@ -71,7 +70,7 @@ public class CustomerController {
 	 * @return ResponseEntity containing the created customer data.
 	 */
 	@PostMapping
-	public ResponseEntity<CustomerDTO> createCustomer(@RequestBody CustomerDTO customerDTO) {
+	public ResponseEntity<CustomerDTO> createCustomer(@Valid @RequestBody CustomerDTO customerDTO) {
 
 		CustomerDTO customer = customerService.createCustomer(customerDTO);
 		return ResponseEntity.status(HttpStatus.CREATED).body(customer);
@@ -95,13 +94,13 @@ public class CustomerController {
 	/**
 	 * Checks if a customer exists by their ID.
 	 *
-	 * @param id the ID of the customer to check
+	 * @param customerId the ID of the customer to check
 	 * @return true if the customer exists, false otherwise
 	 */
-	@GetMapping("/account/{id}")
-	public boolean customerExists(@PathVariable Integer id) {
+	@GetMapping("/account/{customerId}")
+	public boolean customerExists(@PathVariable Integer customerId) {
 
-		return customerService.customerExists(id);
+		return customerService.customerExists(customerId);
 
 	}
 }

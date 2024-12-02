@@ -6,7 +6,8 @@ import lombok.RequiredArgsConstructor;
 import java.util.function.Predicate;
 
 /**
- * Utility class for validating customer-related fields.
+ * Utility class for validating customer data.
+ * Thread-safe because all methods are static and the class is stateless.
  */
 @RequiredArgsConstructor
 public class CustomerValidationUtils {

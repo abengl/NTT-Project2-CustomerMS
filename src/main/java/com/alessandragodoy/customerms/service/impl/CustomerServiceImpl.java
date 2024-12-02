@@ -1,13 +1,13 @@
 package com.alessandragodoy.customerms.service.impl;
 
+import com.alessandragodoy.customerms.adapter.CustomerAdapter;
 import com.alessandragodoy.customerms.controller.dto.CustomerDTO;
-import com.alessandragodoy.customerms.controller.dto.CustomerMapper;
+import com.alessandragodoy.customerms.utility.CustomerMapper;
 import com.alessandragodoy.customerms.exception.AccountsNotFoundException;
 import com.alessandragodoy.customerms.exception.CustomerValidationException;
 import com.alessandragodoy.customerms.model.Customer;
 import com.alessandragodoy.customerms.repository.CustomerRepository;
 import com.alessandragodoy.customerms.service.CustomerService;
-import com.alessandragodoy.customerms.service.CustomerServiceClient;
 import com.alessandragodoy.customerms.utility.CustomerValidationUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ import java.util.Optional;
 public class CustomerServiceImpl implements CustomerService {
 
 	private final CustomerRepository customerRepository;
-	private final CustomerServiceClient customerServiceClient;
+	private final CustomerAdapter customerAdapter;
 
 	/* Customer MS CRUD methods */
 	@Override
@@ -58,7 +58,7 @@ public class CustomerServiceImpl implements CustomerService {
 
 	@Override
 	public CustomerDTO deleteCustomerById(Integer customerId) {
-		if (customerServiceClient.customerHasAccounts(customerId)) {
+		if (customerAdapter.customerHasAccounts(customerId)) {
 			throw new CustomerValidationException("Customer has accounts and cannot be deleted.");
 		}
 		return customerRepository.findById(customerId).map(existingCustomer -> {
@@ -67,7 +67,6 @@ public class CustomerServiceImpl implements CustomerService {
 		}).orElseThrow(() -> new AccountsNotFoundException("Customer not found"));
 	}
 
-	/* Method for the Account MS */
 	@Override
 	public boolean customerExists(Integer customerId) {
 		return customerRepository.existsById(customerId);

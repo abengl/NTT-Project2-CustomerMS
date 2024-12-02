@@ -129,6 +129,7 @@
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
                         </exclude>
+                        <exclude>target/generated-sources/openapi/**</exclude>
                     </excludes>
                 </configuration>
             </plugin>
@@ -199,9 +200,10 @@
                                 <exclude>com/alessandragodoy/customerms/configuration/**</exclude>
                                 <exclude>com/alessandragodoy/customerms/exception/**</exclude>
                                 <exclude>com/alessandragodoy/customerms/utility/**</exclude>
+                                <exclude>com/alessandragodoy/customerms/adapter/**</exclude>
                                 <exclude>com/alessandragodoy/customerms/api/**</exclude>
+                                <exclude>com/alessandragodoy/customerms/model/CustomerDTO*</exclude>
                                 <exclude>com/alessandragodoy/customerms/CustomerMsApplication*</exclude>
-                                <exclude>com/alessandragodoy/customerms/service/CustomerServiceClient*</exclude>
                             </excludes>
                         </configuration>
                     </execution>
