@@ -2,11 +2,11 @@
 This microservice is part of the project the NTT Data Tech Girls program. It provides a CRUD API for managing customers in the banking system. Developed with Spring Boot, it incorporates functional programming practices and is integrated with a MySQL database. OpenAPI documentation is included, and the API can be tested with Postman. Unit tests are included and code coverage can be tested with JaCoCo, as well as, code style validation with Checkstyle.
 
 ## Table of Contents
-1. [Technologies and Approaches](#technologies-and-approaches)
-2. [UML Diagrams](#uml-diagrams)
-3. [Postman](#postman)
-4. [Swagger / OpenAPI Documentation](#swagger--openapi-documentation)
-5. [Code Quality and Coverage](#code-quality-and-coverage)
+- [Technologies and Approaches](#technologies-and-approaches)
+- [UML Diagrams](#uml-diagrams)
+- [Postman](#postman)
+- [Swagger / OpenAPI Documentation](#swagger--openapi-documentation)
+- [Code Quality and Coverage](#code-quality-and-coverage)
 
 ---
 
