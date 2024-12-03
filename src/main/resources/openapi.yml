@@ -13,7 +13,7 @@ tags:
   - name: Customers
     description: Controller for Customer
 paths:
-  /api/customers/{customerId}:
+  /api/v0/customers/{customerId}:
     get:
       tags:
         - Customers
@@ -115,7 +115,7 @@ paths:
                 email: "john.doe@example.com"
         '404':
           description: Customer not found
-  /api/customers:
+  /api/v0/customers:
     get:
       tags:
         - Customers
@@ -162,7 +162,7 @@ paths:
                 dni: "12345678"
                 email: "john.doe@example.com"
 
-  /api/customers/account/{customerId}:
+  /api/v0/customers/account/{customerId}:
     get:
       tags:
         - Customers
